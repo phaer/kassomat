@@ -4,7 +4,7 @@
 #include "ssp_helpers.h"
 #include "main.h"
 #include "ssp.h"
-#include <async.h>
+#include <hiredis/async.h>
 
 static const unsigned long long encryptionKey = 0x123456701234567LL;
 

@@ -10,8 +10,6 @@ run: all.targets
 
 all.targets :
 	$(MAKE) -C lib
-	$(MAKE) -C ../hiredis
-	$(MAKE) -C ../libevent-2.0.22-stable
 	$(MAKE) -C kassomat
 
 clean :
