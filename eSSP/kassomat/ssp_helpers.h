@@ -33,19 +33,19 @@
 
 
 
-#define PRINT_CMD(_sspC) do { 						\
-	int _i; 										\
-	printf("cmd: ");								\
-	for (_i=0; _i<_sspC->CommandDataLength; _i++) 	\
+#define PRINT_CMD(_sspC) do { \
+	int _i; \
+	printf("cmd: ");	\
+	for (_i=0; _i<_sspC->CommandDataLength; _i++) \
 		printf ("0x%02x ", _sspC->CommandData[_i]); \
-	printf("\n"); 									\
+	printf("\n"); \
 } while (0)
-#define PRINT_RSP(_sspC) do { 						\
-	int _i;											\
-	printf("rsp: ");								\
-	for (_i=0; _i<_sspC->ResponseDataLength; _i++) 	\
-		printf ("0x%02x ", _sspC->ResponseData[_i]);\
-	printf("\n"); 									\
+#define PRINT_RSP(_sspC) do { \
+	int _i;	\
+	printf("rsp: ");	\
+	for (_i=0; _i<_sspC->ResponseDataLength; _i++)	\
+		printf ("0x%02x ", _sspC->ResponseData[_i]); \
+	printf("\n"); \
 } while (0)
 
 
@@ -103,7 +103,8 @@ SSP_RESPONSE_ENUM ssp6_host_protocol(SSP_COMMAND *sspC,const unsigned char host_
 SSP_RESPONSE_ENUM ssp6_setup_request(SSP_COMMAND *sspC, SSP6_SETUP_REQUEST_DATA *setup_request_data);
 SSP_RESPONSE_ENUM ssp6_enable(SSP_COMMAND *sspC);
 SSP_RESPONSE_ENUM ssp6_enable_payout(SSP_COMMAND *sspC, const char type);
-SSP_RESPONSE_ENUM ssp6_set_inhibits(SSP_COMMAND *sspC,const unsigned char lowchannels, const unsigned char highchannels);
+SSP_RESPONSE_ENUM ssp6_set_inhibits(SSP_COMMAND *sspC, const unsigned char lowchannels,
+                                    const unsigned char highchannels);
 SSP_RESPONSE_ENUM ssp6_poll(SSP_COMMAND *sspC, SSP_POLL_DATA6 * poll_response);
 SSP_RESPONSE_ENUM ssp6_reset(SSP_COMMAND *sspC);
 SSP_RESPONSE_ENUM ssp6_disable_payout(SSP_COMMAND *sspC);
@@ -111,7 +112,8 @@ SSP_RESPONSE_ENUM ssp6_disable(SSP_COMMAND *sspC);
 SSP_RESPONSE_ENUM ssp6_stack_note(SSP_COMMAND *sspC);
 SSP_RESPONSE_ENUM ssp6_payout_note(SSP_COMMAND *sspC);
 SSP_RESPONSE_ENUM ssp6_run_calibration(SSP_COMMAND *sspC);
-SSP_RESPONSE_ENUM ssp6_set_coinmech_inhibits(SSP_COMMAND *sspC, unsigned int value, const char *cc, enum channel_state state);
+SSP_RESPONSE_ENUM ssp6_set_coinmech_inhibits(SSP_COMMAND *sspC, unsigned int value,
+                                             const char *cc, enum channel_state state);
 
 int send_ssp_command(SSP_COMMAND *sspC);
 int negotiate_ssp_encryption(SSP_COMMAND *sspC, SSP_FULL_KEY * hostKey);

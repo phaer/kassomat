@@ -108,7 +108,7 @@ int send_ssp_command(SSP_COMMAND *sspC) {
 	return SSPSendCommand(sspPort, sspC);
 }
 
-int negotiate_ssp_encryption(SSP_COMMAND *sspC, SSP_FULL_KEY * hostKey){
+int negotiate_ssp_encryption(SSP_COMMAND *sspC, SSP_FULL_KEY * hostKey) {
 	return NegotiateSSPEncryption(sspPort, sspC->SSPAddress, hostKey);
 }
 
@@ -225,7 +225,7 @@ void parse_poll(SSP_POLL_DATA6 * poll) {
 			printf("Calibration fail: ");
 
 			switch(poll->events[i].data1) {
-			case NO_FAILUE:
+			case NO_FAILURE:
 				printf ("No failure\n");
 				redisAsyncCommand(db, NULL, NULL, "PUBLISH validator {'event':'calibration fail','error':'no error'}");
 				break;
