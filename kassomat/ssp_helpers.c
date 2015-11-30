@@ -1,6 +1,6 @@
 #include "ssp_helpers.h"
 
-#include "../inc/SSPComs.h"
+#include <SSPComs.h>
 
 static SSP_RESPONSE_ENUM _ssp_return_values(SSP_COMMAND * sspC) {
   // check for timeout
@@ -266,7 +266,7 @@ SSP_RESPONSE_ENUM ssp6_poll(SSP_COMMAND *sspC, SSP_POLL_DATA6 *poll_response) {
       case SSP_POLL_COIN_CREDIT:
       case SSP_POLL_SMART_EMPTYING:
       case SSP_POLL_SMART_EMPTIED:
-      case SSP_POLL_FRAUD_ATTEMPT:
+      case SSP_POLL_FRAUD_ATTEMPT: {
         unsigned char event = sspC->ResponseData[i];
         unsigned int countries;
         i++; // move onto the country count;
@@ -295,42 +295,44 @@ SSP_RESPONSE_ENUM ssp6_poll(SSP_COMMAND *sspC, SSP_POLL_DATA6 *poll_response) {
             poll_response->event_count++;
           }
         }
+      }
         break;
         // all these commands have 11 data bytes per country;
-            case SSP_POLL_INCOMPLETE_PAYOUT:
-            case SSP_POLL_INCOMPLETE_FLOAT:
-              unsigned int countries;
-              unsigned char event = sspC->ResponseData[i];
-              i++; // move onto the country count;
-              countries = (unsigned int)sspC->ResponseData[i];
-              // for every country in the response, make a new event structure and store into it
-              for (j = 0; j < countries; ++j) {
-                int k;
-                poll_response->events[poll_response->event_count].event = event;
-                poll_response->events[poll_response->event_count].data1 = 0;
-                poll_response->events[poll_response->event_count].data2 = 0;
-                poll_response->events[poll_response->event_count].cc[3] = '\0';
+      case SSP_POLL_INCOMPLETE_PAYOUT:
+      case SSP_POLL_INCOMPLETE_FLOAT: {
+        unsigned int countries;
+        unsigned char event = sspC->ResponseData[i];
+        i++; // move onto the country count;
+        countries = (unsigned int)sspC->ResponseData[i];
+        // for every country in the response, make a new event structure and store into it
+        for (j = 0; j < countries; ++j) {
+          int k;
+          poll_response->events[poll_response->event_count].event = event;
+          poll_response->events[poll_response->event_count].data1 = 0;
+          poll_response->events[poll_response->event_count].data2 = 0;
+          poll_response->events[poll_response->event_count].cc[3] = '\0';
 
-                for (k = 0; k < 4; ++k) {
-                  i++; //move through the 4 bytes of data
-                  poll_response->events[poll_response->event_count].data1 += \
-                    (((unsigned long)sspC->ResponseData[i]) << (8*i));
-                }
-                for (k = 0; k < 4; ++k) {
-                  i++; //move through the 4 bytes of data
-                  poll_response->events[poll_response->event_count].data2 += \
-                    (((unsigned long)sspC->ResponseData[i]) << (8*i));
-                }
-                for (k = 0; k < 3; ++k) {
-                    i++; //move through the 3 bytes of country code
-                    poll_response->events[poll_response->event_count].cc[k] += sspC->ResponseData[i];
-                }
+          for (k = 0; k < 4; ++k) {
+            i++; //move through the 4 bytes of data
+            poll_response->events[poll_response->event_count].data1 += \
+              (((unsigned long)sspC->ResponseData[i]) << (8*i));
+          }
+          for (k = 0; k < 4; ++k) {
+            i++; //move through the 4 bytes of data
+            poll_response->events[poll_response->event_count].data2 += \
+              (((unsigned long)sspC->ResponseData[i]) << (8*i));
+          }
+          for (k = 0; k < 3; ++k) {
+            i++; //move through the 3 bytes of country code
+            poll_response->events[poll_response->event_count].cc[k] += sspC->ResponseData[i];
+          }
 
-                if (j != countries-1) {// the last time through event_count will be updated elsewhere.
-                    poll_response->event_count++;
-                }
-              }
-              break;
+          if (j != countries-1) {// the last time through event_count will be updated elsewhere.
+            poll_response->event_count++;
+          }
+        }
+      }
+        break;
       default: //every other command has no data bytes
         poll_response->events[poll_response->event_count].data1 = 0;
         poll_response->events[poll_response->event_count].data2 = 0;

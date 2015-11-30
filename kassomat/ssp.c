@@ -225,7 +225,7 @@ void parse_poll(SSP_POLL_DATA6 * poll) {
 			printf("Calibration fail: ");
 
 			switch(poll->events[i].data1) {
-			case NO_FAILURE:
+			case NO_FAILUE:
 				printf ("No failure\n");
 				redisAsyncCommand(db, NULL, NULL, "PUBLISH validator {'event':'calibration fail','error':'no error'}");
 				break;

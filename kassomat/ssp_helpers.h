@@ -3,7 +3,7 @@
 #define BASIC_DEMO6_SSP_HELPERS_H
 
 #include <stdio.h>
-#include "../inc/SSPComs.h"
+#include <SSPComs.h>
 
 #define SSP_CMD_RUN_CALIBRATION 0x48
 #define SSP_CMD_SET_COINMECH_INHIBITS 0x40
